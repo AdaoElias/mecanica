@@ -799,6 +799,21 @@ exceptions 0
 
 A Aula 1 passou a aparecer logo abaixo do cabeçalho ao abrir a URL com hash, clicar em “Começar pela Aula 1” ou recarregar a página com `#aula-1`.
 
+Após o push `af4df46`, o `Invoke-WebRequest` confirmou que o HTML publicado já continha o código novo:
+
+```text
+https://adaoelias.github.io/mecanica/ => status=200 length=106388 new=True old=False
+https://adaoelias.github.io/mecanica/index.html?v=af4df46 => status=200 length=106388 new=True old=False
+```
+
+Um primeiro navegador isolado recebeu HTML antigo do cache/CDN (`panelId panel-aula-1`, `panelTop 1362`). Com cache-busting por query string, a validação final no GitHub Pages confirmou:
+
+```text
+initial {"url":"https://adaoelias.github.io/mecanica/?v=af4df46#aula-1","visiblePanel":"aula-1","panelId":"aula-1","panelTop":116,"introText":"Segurança antes de qualquer manutenção.","topbarHeight":111,"scrollY":1246,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+afterClick {"url":"https://adaoelias.github.io/mecanica/?v=af4df46#aula-1","visiblePanel":"aula-1","panelId":"aula-1","panelTop":128,"introText":"Segurança antes de qualquer manutenção.","topbarHeight":111,"scrollY":1234,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+exceptions 0
+```
+
 ---
 
 ## 3. Estado atual do projeto
@@ -877,6 +892,7 @@ Não abrir `index.html` diretamente com `file://`, porque o `fetch()` do `.md` n
 - Pasta: `/root`.
 - O `fetch()` do `.md` funciona nessa URL: `mdFetch 200 ok=true`.
 - Arrays validados no site publicado: 12 painéis, 18 capítulos, 35 questões e 63 checks.
+- Após a correção do scroll, usar `Ctrl+F5` se o navegador ainda mostrar HTML antigo; com cache-busting, `panelTop 116–128` e `panelId aula-1`.
 
 ---
 
@@ -1035,7 +1051,7 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Causa secundária: painéis tinham id `panel-aula-1`, enquanto links/hash usavam `#aula-1`.
 - Correção: ids dos painéis passaram a ser `aula-1`, `aria-controls` foi ajustado, foi adicionado `scroll-margin-top`, `activate()` passou a rolar para `getPanel(key)` e hash inicial passou a rolar para o painel.
 - Validação local: `panelTop 116–128`, `introText Segurança antes de qualquer manutenção.`, `exceptions 0`.
-- Status: resolvido localmente; depende de commit/push para valer no GitHub Pages.
+- Status: resolvido; validado no GitHub Pages após o push `af4df46`, com `panelId aula-1` e `panelTop 116–128`.
 
 ---
 
@@ -1054,6 +1070,6 @@ O projeto está funcional localmente, com:
 - documentação de publicação em `PUBLICAR.md`;
 - commit `d9aaeec` enviado para `https://github.com/AdaoElias/mecanica`;
 - GitHub Pages ativado em `https://adaoelias.github.io/mecanica/`;
-- correção do scroll da Aula 1 pronta para novo commit/push.
+- correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages.
 
-Ainda é necessário enviar a correção do scroll da Aula 1 e fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
+Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
