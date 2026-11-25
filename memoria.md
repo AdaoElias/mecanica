@@ -662,6 +662,145 @@ Criação de:
 
 ---
 
+### Interação 9 — Usuário pediu commit e push
+
+**Solicitação do usuário**
+
+> https://github.com/AdaoElias/mecanica
+> faz o commit e push por favaor
+
+**Resposta dada**
+
+Foi verificado que a pasta ainda não era repositório Git; `gh` não estava instalado. Foi inicializado o Git localmente e o remote informado foi adicionado.
+
+**Ações/soluções aplicadas**
+
+- `git rev-parse --is-inside-work-tree` retornou `fatal: not a git repository`.
+- `gh auth status` e `gh repo view` falharam porque `gh` não está instalado.
+- `git config --global user.name` retornou `AdaoElias`.
+- `git config --global user.email` retornou `adaoelias@gmail.com`.
+- `git init -b main` criou o repositório local.
+- `git remote add origin https://github.com/AdaoElias/mecanica.git` adicionou o remote.
+- Foi criado `.gitignore` com:
+  - `~$*`
+  - `.DS_Store`
+  - `Thumbs.db`
+- Foram verificados possíveis segredos em `*.js`, `*.html`, `*.md` e `*.sql`; nenhuma chave real `service_role` ou anon key real foi encontrada.
+- `git add -A` adicionou 13 arquivos, ignorando o arquivo temporário do Word.
+- `git commit -m "Initial commit: site Mecanica na Veia com 12 aulas"` criou o commit `d9aaeec`.
+- `git push -u origin main` enviou com sucesso:
+  - `* [new branch] main -> main`
+  - `branch 'main' set up to track 'origin/main'.`
+- `git status --short --branch` retornou `## main...origin/main`.
+
+**Resultado**
+
+Repo publicado em `https://github.com/AdaoElias/mecanica` com branch `main` sincronizada.
+
+---
+
+### Interação 10 — Usuário perguntou como disponibilizar na web
+
+**Solicitação do usuário**
+
+> e agora como faço para diponibilizar para fica na web?
+
+**Resposta dada**
+
+Foram passadas as instruções de ativação do GitHub Pages:
+
+1. Abrir **Settings → Pages** no repo `AdaoElias/mecanica`.
+2. Escolher **Deploy from a branch**.
+3. Selecionar branch `main` e pasta `/(root)`.
+4. Salvar e aguardar 1–3 minutos.
+5. Acessar `https://adaoelias.github.io/mecanica/`.
+
+Também foi dito que, para login, `supabase-config.js` deve ser preenchido, commitado e a URL do Pages cadastrada nos Redirect URLs do Supabase.
+
+**Resultado**
+
+O GitHub Pages foi ativado pelo usuário e a URL passou a responder.
+
+---
+
+### Interação 11 — Usuário relatou que a Aula 1 não aparecia
+
+**Solicitação do usuário**
+
+> verifica pra mim. parace que não está aparecendo a aula 1
+
+**Resposta dada**
+
+Foi verificado que a Aula 1 estava carregada corretamente, mas o botão “Começar pela Aula 1” rolava a página apenas até o topo de `<main>`, deixando o painel da aula cerca de 1200 px abaixo do topo visível.
+
+**Diagnóstico**
+
+Teste na URL publicada com Edge headless isolado:
+
+```text
+url https://adaoelias.github.io/mecanica/#aula-1
+panels 12
+activePanel null
+stackText AULA 1 · INTRODUÇÃO + CAPÍTULO 1...
+mdFetch 200  ok=true
+cacheLength 62237
+savedTab "aula-1"
+chapters 18
+quizItems 35
+checks 63
+exceptions 0
+```
+
+Teste de geometria na URL publicada:
+
+```text
+initial {"visiblePanel":"aula-1","panelTop":1362,"introTop":1362,"topbarHeight":111,"scrollY":0,"mainTop":127,"aula1ChapterIds":["intro","cap1"]}
+afterClick {"visiblePanel":"aula-1","panelTop":1235,"introTop":1235,"topbarHeight":111,"scrollY":127,"mainTop":0,"aula1ChapterIds":["intro","cap1"]}
+```
+
+Conclusão:
+
+- `visiblePanel` era `aula-1`;
+- o conteúdo existia;
+- o problema era o alvo do scroll, não o carregamento da apostila;
+- os painéis tinham id `panel-aula-1`, enquanto os hashes e links usavam `#aula-1`;
+- o botão chamava `document.getElementById('main').scrollIntoView(...)`, parando no topo do `<main>`, antes do hero e da animação.
+
+**Ações/soluções aplicadas em `index.html`**
+
+- Tab `aria-controls` mudou de `panel-<key>` para `<key>`.
+- Painel gerado mudou de `id="panel-<key>"` para `id="<key>"`.
+- Foi adicionado:
+  - `#main,.panel{scroll-margin-top:calc(var(--header) + 18px)}`
+- `activate()` passou a rolar para o painel ativo:
+  - `getPanel(key).scrollIntoView({ behavior: 'smooth', block: 'start' });`
+- No `boot()`, quando a URL já vinha com `#aula-1`, o activate passou a receber `scroll = true`.
+
+**Validação local**
+
+```text
+INLINE JS OK
+CLIENT JS OK
+CONFIG JS OK
+AUTH IDS OK
+SCRIPT TAGS OK
+```
+
+Teste CDP local:
+
+```text
+initial {"url":"http://localhost:8000/#aula-1","visiblePanel":"aula-1","panelTop":116,"introText":"Segurança antes de qualquer manutenção.","topbarHeight":111,"scrollY":1246,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+afterClick {"url":"http://localhost:8000/#aula-1","visiblePanel":"aula-1","panelTop":128,"introText":"Segurança antes de qualquer manutenção.","topbarHeight":111,"scrollY":1234,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+afterReloadWithHash {"url":"http://localhost:8000/#aula-1","visiblePanel":"aula-1","panelTop":116,"introText":"Segurança antes de qualquer manutenção.","topbarHeight":111,"scrollY":1246,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+exceptions 0
+```
+
+**Resultado**
+
+A Aula 1 passou a aparecer logo abaixo do cabeçalho ao abrir a URL com hash, clicar em “Começar pela Aula 1” ou recarregar a página com `#aula-1`.
+
+---
+
 ## 3. Estado atual do projeto
 
 ### 3.1 Arquivos relevantes
@@ -695,6 +834,9 @@ Criação de:
 - DOCX originais na pasta.
 - `memoria.md`
   - este arquivo.
+- `.gitignore`
+  - ignora `~$*`, `.DS_Store` e `Thumbs.db`.
+- Repo Git local em `main`, com remote `origin` apontando para `https://github.com/AdaoElias/mecanica.git`.
 
 ### 3.2 Comportamento atual do site
 
@@ -727,11 +869,20 @@ http://localhost:8000/
 
 Não abrir `index.html` diretamente com `file://`, porque o `fetch()` do `.md` não funciona nesse modo.
 
+### 3.4 Site publicado
+
+- URL: `https://adaoelias.github.io/mecanica/`
+- GitHub Pages ativado pelo usuário.
+- Branch: `main`.
+- Pasta: `/root`.
+- O `fetch()` do `.md` funciona nessa URL: `mdFetch 200 ok=true`.
+- Arrays validados no site publicado: 12 painéis, 18 capítulos, 35 questões e 63 checks.
+
 ---
 
 ## 4. Pendências
 
-- Publicar no GitHub Pages.
+- Confirmar visualmente no navegador do usuário o scroll corrigido para a Aula 1 após o push da correção.
 - Preencher `supabase-config.js` com URL e anon key reais.
 - Criar projeto Supabase e executar `schema.sql`.
 - Configurar OAuth GitHub e Google.
@@ -739,8 +890,6 @@ Não abrir `index.html` diretamente com `file://`, porque o `fetch()` do `.md` n
   - GitHub Pages: `https://<usuario>.github.io/<repo>/`
   - Local: `http://localhost:8000/`
 - Configurar SMTP próprio se quiser e-mail/senha com confirmação.
-- Nenhum commit foi feito.
-- Nenhum repositório GitHub foi criado.
 - Não foi localizado PDF consolidado na pasta durante a sessão atual.
 - Não foi localizado DOCX consolidado com o nome `Apostila_Consolidada_Mecanica_Automotiva.docx` na pasta durante a sessão atual.
 
@@ -878,6 +1027,16 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Impacto: baixo, pois o site já exige servidor HTTP para carregar o `.md`.
 - Status: não alterado.
 
+### 5.21 Aula 1 carregava, mas não ficava visível após “Começar”
+
+- Erro relatado: “parece que não está aparecendo a aula 1”.
+- Diagnóstico: `visiblePanel` era `aula-1`, `mdFetch 200 ok=true`, 12 painéis e 63 checks presentes.
+- Causa: botão “Começar pela Aula 1” chamava `scrollIntoView()` em `#main`, e o painel da aula ficava em `panelTop ≈ 1235–1362 px`.
+- Causa secundária: painéis tinham id `panel-aula-1`, enquanto links/hash usavam `#aula-1`.
+- Correção: ids dos painéis passaram a ser `aula-1`, `aria-controls` foi ajustado, foi adicionado `scroll-margin-top`, `activate()` passou a rolar para `getPanel(key)` e hash inicial passou a rolar para o painel.
+- Validação local: `panelTop 116–128`, `introText Segurança antes de qualquer manutenção.`, `exceptions 0`.
+- Status: resolvido localmente; depende de commit/push para valer no GitHub Pages.
+
 ---
 
 ## 6. Resumo final para outra pessoa
@@ -892,6 +1051,9 @@ O projeto está funcional localmente, com:
 - auth Supabase implementada, mas desativada enquanto `supabase-config.js` estiver vazio;
 - citações de fontes removidas apenas da renderização do site;
 - animação contextual do ciclo Otto no hero;
-- documentação de publicação em `PUBLICAR.md`.
+- documentação de publicação em `PUBLICAR.md`;
+- commit `d9aaeec` enviado para `https://github.com/AdaoElias/mecanica`;
+- GitHub Pages ativado em `https://adaoelias.github.io/mecanica/`;
+- correção do scroll da Aula 1 pronta para novo commit/push.
 
-Ainda é necessário publicar no GitHub Pages e fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
+Ainda é necessário enviar a correção do scroll da Aula 1 e fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
