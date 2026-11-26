@@ -1208,6 +1208,17 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Validação: `homeInView true` no início, após Aula 12 e após voltar para Aula 1; `tabCount 12`; `exceptions 0`.
 - Status: resolvido; enviado no commit `37efa6f` e validado no GitHub Pages após `5b6f8ef`.
 
+### 5.24 Quebra visual na primeira dica da Aula 1
+
+- Solicitação literal: “Na primeira dica da aula 1, referente orientação... Tem quebra de página entre dica, atenção e resumo. desnecessários pois é texto unico. Corrige por favor.”
+- Diagnóstico: a orientação era renderizada como callout isolado, seguida de um subtítulo “Legenda dos quadros”, uma lista separada e um `<hr class="hr">` no fim da seção.
+- Correção no conteúdo: `Apostila_Consolidada_Mecanica_Automotiva.md` passou a reunir orientação, Dica, Atenção, Resumo do capítulo e Figura descritiva em um único bloco de `> **Dica**`.
+- Correção no renderer: `parseDocument()` passou a remover o `---` final de cada seção, eliminando `<hr>` desnecessário no fim das seções.
+- Correção de cache: `MD_FILE` ganhou `?v=2` e `CACHE_KEY` virou `mecanica:apostila-md-v2`, para usuários com markdown antigo em `localStorage` receberem a versão corrigida.
+- Validação local com CDP: `callouts 1`, `hrs 0`, `legendHeading false`, `dica true`, `atencao true`, `resumo true`, `figura true`, `exceptions 0`, `panels 12`, `tabs 12`, `chapters 18`, `quizzes 35`, `checks 63`.
+- Validação sintática: `INLINE JS OK`, `CLIENT JS OK`, `CONFIG JS OK`, `AUTH IDS OK`, `SCRIPT TAGS OK`.
+- Status: resolvido localmente; alterações ainda não comitadas nem enviadas ao GitHub.
+
 ---
 
 ## 6. Resumo final para outra pessoa
@@ -1227,6 +1238,7 @@ O projeto está funcional localmente, com:
 - GitHub Pages ativado em `https://adaoelias.github.io/mecanica/`;
 - correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages;
 - correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar;
-- aba Aula 1 fixa na navegação enviada no commit `37efa6f` e validada no ar.
+- aba Aula 1 fixa na navegação enviada no commit `37efa6f` e validada no ar;
+- primeira dica da Aula 1 reunida em um único bloco, sem `<hr>` final e com cache do markdown versionado.
 
-Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
+Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção, e enviar as correções locais da primeira dica da Aula 1 em um novo commit.

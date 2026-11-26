@@ -57,14 +57,7 @@ Pense no automóvel como uma equipe:
 | Freios | Transformam movimento em calor e param o carro | Capítulo 9 |
 | Sistema elétrico | Comanda, acende, carrega e diagnostica | Capítulo 10 |
 
-> **Dica** — Comece pelos Capítulos 1 a 3. Depois, avance conforme o interesse. Se você já trabalha na oficina, use os quadros **Dica**, **Atenção** e **Resumo** como revisão rápida.
-
-## Legenda dos quadros
-
-- **Dica:** procedimento simples que evita erro ou retrabalho.
-- **Atenção:** risco à pessoa, ao motor ou ao diagnóstico.
-- **Resumo do capítulo:** o que levar da leitura.
-- **Figura descritiva:** imagem explicada em palavras, para você reconstruir o esquema no caderno.
+> **Dica** — Comece pelos Capítulos 1 a 3. Depois, avance conforme o interesse. Se você já trabalha na oficina, use os quadros como revisão rápida: **Dica** indica procedimento simples que evita erro ou retrabalho; **Atenção** marca risco à pessoa, ao motor ou ao diagnóstico; **Resumo do capítulo** traz o que levar da leitura; **Figura descritiva** explica em palavras uma imagem para você reconstruir o esquema no caderno.
 
 As questões de revisão aparecem no fim de cada capítulo. O **gabarito comentado** está na última seção.
 

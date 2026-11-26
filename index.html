@@ -149,8 +149,8 @@ details{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,
 <script>(function () {
   'use strict';
 
-  var MD_FILE = 'Apostila_Consolidada_Mecanica_Automotiva.md';
-  var CACHE_KEY = 'mecanica:apostila-md';
+  var MD_FILE = 'Apostila_Consolidada_Mecanica_Automotiva.md?v=2';
+  var CACHE_KEY = 'mecanica:apostila-md-v2';
   var DB = window.MecanicaSupabase || null;
   var current = 'aula-1';
   var D = null;
@@ -358,7 +358,7 @@ details{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,
     var parts = {};
     for (i = 0; i < found.length; i += 1) {
       var end = i + 1 < found.length ? found[i + 1].pos : md.length;
-      parts[found[i].key] = md.slice(found[i].pos, end).replace(/^#[^\n]*\n/, '');
+      parts[found[i].key] = md.slice(found[i].pos, end).replace(/^#[^\n]*\n/, '').replace(/\n---\s*$/, '');
     }
 
     if (parts.cap10) {
