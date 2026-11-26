@@ -939,6 +939,15 @@ afterHome {"panel":"aula-1","activeTabs":["aula-1"],"homeInView":true,"homeLeft"
 exceptions 0
 ```
 
+Após o push `5b6f8ef`, o teste foi repetido no GitHub Pages:
+
+```text
+initial {"url":"https://adaoelias.github.io/mecanica/?v=final-37efa6f#aula-1","panel":"aula-1","homeInView":true,"homeLeft":274,"containerLeft":274,"scrollLeft":0,"scrollWidth":948,"clientWidth":748,"tabCount":12}
+afterAula12 {"url":"https://adaoelias.github.io/mecanica/?v=final-37efa6f#aula-12","panel":"aula-12","homeInView":true,"homeLeft":274,"containerLeft":274,"scrollLeft":200,"scrollWidth":948,"clientWidth":748,"tabCount":12}
+afterHome {"url":"https://adaoelias.github.io/mecanica/?v=final-37efa6f#aula-1","panel":"aula-1","homeInView":true,"homeLeft":274,"containerLeft":274,"scrollLeft":0,"scrollWidth":948,"clientWidth":748,"tabCount":12}
+exceptions 0
+```
+
 **Resultado**
 
 A Aula 1 passou a ficar sempre visível e clicável na navegação, mesmo quando a barra está rolada para aulas posteriores.
@@ -1197,7 +1206,7 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Causa: `.tabs` usava `justify-content:center` com conteúdo maior que o contêiner.
 - Correção: `justify-content:flex-start`, aba `.tab-home` sticky para Aula 1, geração das demais aulas via `LESSONS.slice(1)` e centralização controlada da aba ativa.
 - Validação: `homeInView true` no início, após Aula 12 e após voltar para Aula 1; `tabCount 12`; `exceptions 0`.
-- Status: resolvido localmente e enviado no commit `37efa6f`.
+- Status: resolvido; enviado no commit `37efa6f` e validado no GitHub Pages após `5b6f8ef`.
 
 ---
 
@@ -1218,6 +1227,6 @@ O projeto está funcional localmente, com:
 - GitHub Pages ativado em `https://adaoelias.github.io/mecanica/`;
 - correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages;
 - correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar;
-- aba Aula 1 fixa na navegação enviada no commit `37efa6f`.
+- aba Aula 1 fixa na navegação enviada no commit `37efa6f` e validada no ar.
 
 Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
