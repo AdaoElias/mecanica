@@ -1230,7 +1230,7 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Correção de cache: `MD_FILE` passou a `?v=3` e `CACHE_KEY` virou `mecanica:apostila-md-v3`.
 - Validação local: `sourceUnits 18`, `sourceCalloutBlocks 37`, `missingUnits []`, `adjacentCalloutPairs []`, `allUnitsRendered true`.
 - Validação sintática: `INLINE JS OK`, `CLIENT JS OK`, `CONFIG JS OK`, `AUTH IDS OK`, `SCRIPT TAGS OK`.
-- Status: resolvido localmente; alterações ainda não comitadas nem enviadas ao GitHub.
+- Status: resolvido; enviado no commit `f9431d4`.
 
 ---
 
@@ -1253,6 +1253,6 @@ O projeto está funcional localmente, com:
 - correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar;
 - aba Aula 1 fixa na navegação enviada no commit `37efa6f` e validada no ar;
 - primeira dica da Aula 1 reunida em um único bloco, sem `<hr>` final e com cache do markdown versionado, enviada no commit `c3121d6`;
-- pares adjacentes de Dica/Atenção/Correção das demais aulas unidos em blocos únicos, com cache `v3`.
+- pares adjacentes de Dica/Atenção/Correção das demais aulas unidos em blocos únicos, com cache `v3`, enviados no commit `f9431d4`.
 
-Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção, e enviar a correção dos pares adjacentes em um novo commit.
+Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
