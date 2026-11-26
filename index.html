@@ -1294,11 +1294,11 @@ details{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,
     restoreChecks();
     restoreQuizzes();
     restoreNotes();
-    var saved = storeGet('mecanica:tab', 'aula-1');
-    if (!lessonByKey(saved)) saved = 'aula-1';
-    activate(saved, false);
     var hash = window.location.hash.replace('#', '');
-    if (lessonByKey(hash)) activate(hash, true);
+    var saved = storeGet('mecanica:tab', 'aula-1');
+    var target = lessonByKey(hash) ? hash : saved;
+    if (!lessonByKey(target)) target = 'aula-1';
+    activate(target, !!hash);
     if (DB && DB.isConfigured()) {
       DB.onAuthChange(handleAuth);
       DB.session().then(handleAuth).catch(function (err) {
