@@ -816,6 +816,69 @@ exceptions 0
 
 ---
 
+### Interação 12 — Usuário confirmou que outra aula aparecia mesmo com `#aula-1`
+
+**Solicitação do usuário**
+
+> a aula1 não é exibida... mesmo se eu colocar https://adaoelias.github.io/mecanica/#aula-1, no painel aparece aula2, aula3, ...
+
+**Resposta dada**
+
+Foi identificada a causa real: o `boot()` ativava a aba salva em `localStorage` antes de ler `window.location.hash`, e `activate()` sobrescrevia o hash com `history.replaceState`. Assim, se o navegador tinha `mecanica:tab = aula-3`, abrir `#aula-1` era ignorado e o painel voltava para a aula salva.
+
+**Ações/soluções aplicadas**
+
+Antes:
+
+```js
+var saved = storeGet('mecanica:tab', 'aula-1');
+if (!lessonByKey(saved)) saved = 'aula-1';
+activate(saved, false);
+var hash = window.location.hash.replace('#', '');
+if (lessonByKey(hash)) activate(hash, true);
+```
+
+Depois:
+
+```js
+var hash = window.location.hash.replace('#', '');
+var saved = storeGet('mecanica:tab', 'aula-1');
+var target = lessonByKey(hash) ? hash : saved;
+if (!lessonByKey(target)) target = 'aula-1';
+activate(target, !!hash);
+```
+
+Comportamento:
+
+- se a URL tem `#aula-1`, o hash explícito vence;
+- se não há hash, a última aula salva continua sendo restaurada;
+- se o valor salvo for inválido, cai para `aula-1`;
+- quando há hash, a página rola para o painel.
+
+**Validação**
+
+```text
+INLINE JS OK
+CLIENT JS OK
+CONFIG JS OK
+AUTH IDS OK
+SCRIPT TAGS OK
+```
+
+Teste com `localStorage` contendo `aula-3`:
+
+```text
+savedAula3_noHash {"url":"http://localhost:8000/?case=noHash#aula-3","savedTab":"\"aula-3\"","visiblePanel":"aula-3","selectedTab":"aula-3","panelTop":128,"introText":"Curso, cilindrada e compressão.","scrollY":1179,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+savedAula3_hashAula1 {"url":"http://localhost:8000/?case=hashAula1#aula-1","savedTab":"\"aula-1\"","visiblePanel":"aula-1","selectedTab":"aula-1","panelTop":116,"introText":"Segurança antes de qualquer manutenção.","scrollY":1246,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+exceptions 0
+```
+
+**Resultado**
+
+A URL com `#aula-1` agora sempre abre a Aula 1, mesmo quando o navegador tinha outra aula salva. Sem hash, a restauração da última aula continua funcionando.
+
+---
+
 ## 3. Estado atual do projeto
 
 ### 3.1 Arquivos relevantes
@@ -1053,6 +1116,14 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Validação local: `panelTop 116–128`, `introText Segurança antes de qualquer manutenção.`, `exceptions 0`.
 - Status: resolvido; validado no GitHub Pages após o push `af4df46`, com `panelId aula-1` e `panelTop 116–128`.
 
+### 5.22 Hash `#aula-1` era sobrescrito pela aba salva
+
+- Erro relatado: abrir `https://adaoelias.github.io/mecanica/#aula-1` ainda mostrava Aula 2, Aula 3 etc.
+- Causa: `boot()` chamava `activate(saved, false)` antes de ler `window.location.hash`; `activate()` escrevia o hash com `history.replaceState`, apagando o `#aula-1` da URL.
+- Correção: ler o hash primeiro e escolher `target = lessonByKey(hash) ? hash : saved`, chamando `activate()` uma única vez.
+- Validação: com `aula-3` salva, sem hash abria `aula-3`; com `#aula-1` abria `aula-1`, `panelTop 116`, `exceptions 0`.
+- Status: resolvido localmente e enviado no commit `e513d6c`.
+
 ---
 
 ## 6. Resumo final para outra pessoa
@@ -1070,6 +1141,9 @@ O projeto está funcional localmente, com:
 - documentação de publicação em `PUBLICAR.md`;
 - commit `d9aaeec` enviado para `https://github.com/AdaoElias/mecanica`;
 - GitHub Pages ativado em `https://adaoelias.github.io/mecanica/`;
-- correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages.
+- correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages;
+- correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c`.
+
+Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
 
 Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
