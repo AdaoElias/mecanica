@@ -1219,6 +1219,19 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Validação sintática: `INLINE JS OK`, `CLIENT JS OK`, `CONFIG JS OK`, `AUTH IDS OK`, `SCRIPT TAGS OK`.
 - Status: resolvido; enviado no commit `c3121d6`.
 
+### 5.25 Quebras em Dica/Atenção das demais aulas
+
+- Solicitação: verificar todas as sessões Dica e Atenção fora da Aula 1, pois também parecia haver quebras desnecessárias e informação não renderizada.
+- Auditoria antes da correção: 18 ocorrências de Dica/Atenção fora da Aula 1, 18 presentes no DOM, `missing 0`; portanto, não havia informação perdida.
+- Causa das quebras: blocos `>` separados apenas por uma linha em branco viravam `.callout` independentes em `renderBody()`.
+- Pares realmente adjacentes unidos: `Apostila_Consolidada_Mecanica_Automotiva.md:201`/`:203`, `:512`/`:514`, `:566`/`:568` e `:845`/`:847`.
+- O par `:1099`/`:1103` não foi unido porque existe o parágrafo “Curvas de torque × rotação...” entre os dois blocos.
+- Correção: cada par virou um único bloco `>` com o rótulo posterior inline, por exemplo `**Atenção:** ...`.
+- Correção de cache: `MD_FILE` passou a `?v=3` e `CACHE_KEY` virou `mecanica:apostila-md-v3`.
+- Validação local: `sourceUnits 18`, `sourceCalloutBlocks 37`, `missingUnits []`, `adjacentCalloutPairs []`, `allUnitsRendered true`.
+- Validação sintática: `INLINE JS OK`, `CLIENT JS OK`, `CONFIG JS OK`, `AUTH IDS OK`, `SCRIPT TAGS OK`.
+- Status: resolvido localmente; alterações ainda não comitadas nem enviadas ao GitHub.
+
 ---
 
 ## 6. Resumo final para outra pessoa
@@ -1239,6 +1252,7 @@ O projeto está funcional localmente, com:
 - correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages;
 - correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar;
 - aba Aula 1 fixa na navegação enviada no commit `37efa6f` e validada no ar;
-- primeira dica da Aula 1 reunida em um único bloco, sem `<hr>` final e com cache do markdown versionado, enviada no commit `c3121d6`.
+- primeira dica da Aula 1 reunida em um único bloco, sem `<hr>` final e com cache do markdown versionado, enviada no commit `c3121d6`;
+- pares adjacentes de Dica/Atenção/Correção das demais aulas unidos em blocos únicos, com cache `v3`.
 
-Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
+Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção, e enviar a correção dos pares adjacentes em um novo commit.

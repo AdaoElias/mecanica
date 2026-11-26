@@ -198,9 +198,7 @@ Vantagens e desvantagens citadas nas fontes `[A]`:
 | Taxa de compressão | Faixas históricas citadas: gasolina 6–9:1; álcool 9–14:1 | Faixas históricas citadas: 14–22:1 |
 | Característica | Mais leve e de maior rotação | Mais torque em baixa rotação e maior compressão |
 
-> **Correção aplicada** — Motores Otto com injeção direta também admitem **apenas ar** no cilindro. A mistura é formada depois, pela injeção.
-
-> **Atenção** — As faixas de compressão acima são valores históricos presentes nas fontes. Para um motor específico, sempre prevalece o manual do fabricante.
+> **Correção aplicada** — Motores Otto com injeção direta também admitem **apenas ar** no cilindro. A mistura é formada depois, pela injeção. **Atenção:** as faixas de compressão acima são valores históricos presentes nas fontes. Para um motor específico, sempre prevalece o manual do fabricante.
 
 ## 2.4 Quatro tempos, dois tempos e Wankel
 
@@ -509,9 +507,7 @@ A **`came`** é a parte excêntrica do eixo que empurra o tucho. A **folga de v�
 | Muito pequena | Má compressão, explosões no conduto de admissão e queima da válvula de escape |
 | Muito grande | Admissão deficiente e escape incompleto |
 
-> **Dica** — Tuchos hidráulicos eliminam a ajustagem periódica da folga, desde que o sistema esteja com óleo e em boas condições `[A]`.
-
-> **Atenção** — A ruptura da correia dentada provoca colisão entre pistões e válvulas **somente em motores de interferência**. Em motores não interferentes, o motor para, mas não há esse contato `[B]`.
+> **Dica** — Tuchos hidráulicos eliminam a ajustagem periódica da folga, desde que o sistema esteja com óleo e em boas condições `[A]`. **Atenção:** a ruptura da correia dentada provoca colisão entre pistões e válvulas **somente em motores de interferência**. Em motores não interferentes, o motor para, mas não há esse contato `[B]`.
 
 **Marcação da distribuição:** traços ou pontos nos dentes devem coincidir com as referências do motor. Em geral, isso coloca o pistão nº 1 no PMS no fim da descarga `[A]`.
 
@@ -563,9 +559,7 @@ A tampa pressurizada citada trabalha em torno de **0,3 a 0,5 bar**, elevando a t
 
 O **termostato** funciona como uma porta: abre e fecha conforme a temperatura, como diz a analogia da fonte `[C]`.
 
-> **Correção aplicada** — No termossifão, a água **quente é menos densa e sobe** do motor para o radiador; a água fria, mais densa, desce. A fonte trazia essa ordem invertida.
-
-> **Atenção** — Nunca abra a tampa do reservatório com o motor quente. Use líquido conforme a especificação do fabricante; a fonte cita práticas antigas com álcool ou glicerina, hoje substituídas por etilenoglicol adequado.
+> **Correção aplicada** — No termossifão, a água **quente é menos densa e sobe** do motor para o radiador; a água fria, mais densa, desce. A fonte trazia essa ordem invertida. **Atenção:** nunca abra a tampa do reservatório com o motor quente. Use líquido conforme a especificação do fabricante; a fonte cita práticas antigas com álcool ou glicerina, hoje substituídas por etilenoglicol adequado.
 
 ## Resumo do capítulo
 
@@ -842,9 +836,7 @@ A = distância entre rodas na frente
 B = distância entre rodas atrás
 ```
 
-> **Correção aplicada** — A legenda da fonte para `A < B` dizia “convergência ou divergência”. Com A e B definidos assim, `A < B` é divergência.
-
-> **Atenção** — O toe é um dos principais fatores de desgaste irregular, mas não o único. Calibragem e câmber incorreto também são causas importantes `[B]`.
+> **Correção aplicada** — A legenda da fonte para `A < B` dizia “convergência ou divergência”. Com A e B definidos assim, `A < B` é divergência. **Atenção:** o toe é um dos principais fatores de desgaste irregular, mas não o único. Calibragem e câmber incorreto também são causas importantes `[B]`.
 
 ## 8.3 Balanceamento de rodas
 
