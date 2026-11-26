@@ -1217,7 +1217,7 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Correção de cache: `MD_FILE` ganhou `?v=2` e `CACHE_KEY` virou `mecanica:apostila-md-v2`, para usuários com markdown antigo em `localStorage` receberem a versão corrigida.
 - Validação local com CDP: `callouts 1`, `hrs 0`, `legendHeading false`, `dica true`, `atencao true`, `resumo true`, `figura true`, `exceptions 0`, `panels 12`, `tabs 12`, `chapters 18`, `quizzes 35`, `checks 63`.
 - Validação sintática: `INLINE JS OK`, `CLIENT JS OK`, `CONFIG JS OK`, `AUTH IDS OK`, `SCRIPT TAGS OK`.
-- Status: resolvido localmente; alterações ainda não comitadas nem enviadas ao GitHub.
+- Status: resolvido; enviado no commit `c3121d6`.
 
 ---
 
@@ -1239,6 +1239,6 @@ O projeto está funcional localmente, com:
 - correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages;
 - correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar;
 - aba Aula 1 fixa na navegação enviada no commit `37efa6f` e validada no ar;
-- primeira dica da Aula 1 reunida em um único bloco, sem `<hr>` final e com cache do markdown versionado.
+- primeira dica da Aula 1 reunida em um único bloco, sem `<hr>` final e com cache do markdown versionado, enviada no commit `c3121d6`.
 
-Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção, e enviar as correções locais da primeira dica da Aula 1 em um novo commit.
+Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
