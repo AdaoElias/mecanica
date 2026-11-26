@@ -873,6 +873,14 @@ savedAula3_hashAula1 {"url":"http://localhost:8000/?case=hashAula1#aula-1","save
 exceptions 0
 ```
 
+Após o push `d45feaf`, o mesmo teste foi repetido direto no GitHub Pages com cache-busting:
+
+```text
+savedAula3_noHash {"url":"https://adaoelias.github.io/mecanica/?case=noHash&v=d45feaf#aula-3","savedTab":"\"aula-3\"","visiblePanel":"aula-3","selectedTab":"aula-3","panelTop":128,"introText":"Curso, cilindrada e compressão.","scrollY":1179,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+savedAula3_hashAula1 {"url":"https://adaoelias.github.io/mecanica/?case=hashAula1&v=d45feaf#aula-1","savedTab":"\"aula-1\"","visiblePanel":"aula-1","selectedTab":"aula-1","panelTop":116,"introText":"Segurança antes de qualquer manutenção.","scrollY":1246,"panels":12,"chapters":18,"quizItems":35,"checks":63}
+exceptions 0
+```
+
 **Resultado**
 
 A URL com `#aula-1` agora sempre abre a Aula 1, mesmo quando o navegador tinha outra aula salva. Sem hash, a restauração da última aula continua funcionando.
@@ -1122,7 +1130,7 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Causa: `boot()` chamava `activate(saved, false)` antes de ler `window.location.hash`; `activate()` escrevia o hash com `history.replaceState`, apagando o `#aula-1` da URL.
 - Correção: ler o hash primeiro e escolher `target = lessonByKey(hash) ? hash : saved`, chamando `activate()` uma única vez.
 - Validação: com `aula-3` salva, sem hash abria `aula-3`; com `#aula-1` abria `aula-1`, `panelTop 116`, `exceptions 0`.
-- Status: resolvido localmente e enviado no commit `e513d6c`.
+- Status: resolvido; enviado no commit `e513d6c` e validado no GitHub Pages após `d45feaf`.
 
 ---
 
@@ -1142,7 +1150,7 @@ O projeto está funcional localmente, com:
 - commit `d9aaeec` enviado para `https://github.com/AdaoElias/mecanica`;
 - GitHub Pages ativado em `https://adaoelias.github.io/mecanica/`;
 - correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages;
-- correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c`.
+- correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar.
 
 Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
 
