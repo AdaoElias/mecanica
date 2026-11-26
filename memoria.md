@@ -887,6 +887,64 @@ A URL com `#aula-1` agora sempre abre a Aula 1, mesmo quando o navegador tinha o
 
 ---
 
+### Interação 13 — Usuário relatou que não conseguia voltar para a Aula 1 pela navegação
+
+**Solicitação do usuário**
+
+> Quando entro no site ele vai direto para Aula1, porem se eu navegar nas aulas não tem como voltar a aula1, ela não aparece no painel junto com as demais.
+
+**Resposta dada**
+
+Foi inspecionada a barra de abas e confirmado que a Aula 1 estava sendo cortada à esquerda do contêiner rolável.
+
+**Diagnóstico**
+
+Antes da correção, em desktop:
+
+```text
+container: left 274, right 1022, width 748, scrollLeft 0, scrollWidth 848, clientWidth 748
+aula-1: left 174, right 256, inView false
+aula-2: left 261, right 329, inView false
+```
+
+Causa:
+
+- `.tabs` usava `justify-content:center`;
+- como o conteúdo era mais largo que o contêiner, o overflow central cortava as primeiras abas;
+- com `scrollLeft = 0`, não era possível rolar para valores negativos;
+- a Aula 1 existia no DOM, mas ficava fora da área visível da barra.
+
+**Ações/soluções aplicadas em `index.html`**
+
+- `.tabs` passou de `justify-content:center` para `justify-content:flex-start`.
+- Foi adicionada uma aba fixa `id='tab-aula-1'` com classe `.tab-home` dentro de `#tabs`.
+- `.tab-home` usa `position:sticky; left:0; z-index:2`.
+- `buildPanels()` passou a gerar apenas `LESSONS.slice(1)` via `insertAdjacentHTML('beforeend', ...)`, preservando a aba fixa.
+- `activate()` agora centraliza a aba ativa dentro de `#tabs` apenas quando há overflow horizontal.
+
+**Validação local**
+
+```text
+INLINE JS OK
+CLIENT JS OK
+CONFIG JS OK
+AUTH IDS OK
+SCRIPT TAGS OK
+```
+
+```text
+initial {"panel":"aula-1","activeTabs":["aula-1"],"homeInView":true,"homeLeft":274,"containerLeft":274,"scrollLeft":0,"scrollWidth":948,"clientWidth":748,"tabCount":12}
+afterAula12 {"panel":"aula-12","activeTabs":["aula-12"],"homeInView":true,"homeLeft":274,"containerLeft":274,"scrollLeft":200,"scrollWidth":948,"clientWidth":748,"tabCount":12}
+afterHome {"panel":"aula-1","activeTabs":["aula-1"],"homeInView":true,"homeLeft":274,"containerLeft":274,"scrollLeft":0,"scrollWidth":948,"clientWidth":748,"tabCount":12}
+exceptions 0
+```
+
+**Resultado**
+
+A Aula 1 passou a ficar sempre visível e clicável na navegação, mesmo quando a barra está rolada para aulas posteriores.
+
+---
+
 ## 3. Estado atual do projeto
 
 ### 3.1 Arquivos relevantes
@@ -1132,6 +1190,15 @@ Esta seção reúne todos os problemas encontrados, mesmo quando já resolvidos.
 - Validação: com `aula-3` salva, sem hash abria `aula-3`; com `#aula-1` abria `aula-1`, `panelTop 116`, `exceptions 0`.
 - Status: resolvido; enviado no commit `e513d6c` e validado no GitHub Pages após `d45feaf`.
 
+### 5.23 Aula 1 cortada fora da barra de abas
+
+- Erro relatado: “se eu navegar nas aulas não tem como voltar a aula1, ela não aparece no painel junto com as demais”.
+- Diagnóstico: `aula-1` estava em `left 174`, enquanto o contêiner começava em `left 274`; `scrollLeft = 0` não conseguia revelar overflow negativo.
+- Causa: `.tabs` usava `justify-content:center` com conteúdo maior que o contêiner.
+- Correção: `justify-content:flex-start`, aba `.tab-home` sticky para Aula 1, geração das demais aulas via `LESSONS.slice(1)` e centralização controlada da aba ativa.
+- Validação: `homeInView true` no início, após Aula 12 e após voltar para Aula 1; `tabCount 12`; `exceptions 0`.
+- Status: resolvido localmente e enviado no commit `37efa6f`.
+
 ---
 
 ## 6. Resumo final para outra pessoa
@@ -1150,8 +1217,7 @@ O projeto está funcional localmente, com:
 - commit `d9aaeec` enviado para `https://github.com/AdaoElias/mecanica`;
 - GitHub Pages ativado em `https://adaoelias.github.io/mecanica/`;
 - correção do scroll da Aula 1 enviada no commit `af4df46` e validada no GitHub Pages;
-- correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar.
-
-Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
+- correção da prioridade do hash `#aula-1` sobre a aba salva enviada no commit `e513d6c` e validada no ar;
+- aba Aula 1 fixa na navegação enviada no commit `37efa6f`.
 
 Ainda é necessário fornecer as credenciais/configuração reais do Supabase para habilitar login e sincronização em produção.
